@@ -14,7 +14,11 @@ public class PhoneCodeMapperTest extends BaseTest {
 
     public void test_01() {
         MDC.put(LogId.TRACE_LOG_ID, LogId.getLogId());
-        log.info("call 映射数据：{}", redisSettings);
+        try {
+            log.info("call 映射数据：{}", redisSettings);
+        } catch (Exception e) {
+            log.error("call 哈哈哈{}", e);
+        }
     }
 
 
