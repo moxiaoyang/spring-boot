@@ -1,37 +1,21 @@
 package com.app.mapper;
 
-import com.app.model.PhoneCode;
-import org.junit.Test;
+import com.app.log.LogId;
+import com.app.model.RedisSettings;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class PhoneCodeMapperTest extends BaseTest{
+@Slf4j
+public class PhoneCodeMapperTest extends BaseTest {
 
     @Autowired
-    private PhoneCodeMapper phoneCodeMapper;
+    private RedisSettings redisSettings;
 
-    @Test
-    public void deleteByPrimaryKey() {
+    public void test_01() {
+        MDC.put(LogId.TRACE_LOG_ID, LogId.getLogId());
+        log.info("call 映射数据：{}", redisSettings);
     }
 
-    @Test
-    public void insert() {
-    }
 
-    @Test
-    public void insertSelective() {
-    }
-
-    @Test
-    public void selectByPrimaryKey() {
-        PhoneCode phoneCode = phoneCodeMapper.selectByPrimaryKey(1L);
-        System.out.println(phoneCode);
-    }
-
-    @Test
-    public void updateByPrimaryKeySelective() {
-    }
-
-    @Test
-    public void updateByPrimaryKey() {
-    }
 }

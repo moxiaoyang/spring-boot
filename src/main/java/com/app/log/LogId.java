@@ -14,6 +14,8 @@ import java.util.UUID;
  */
 public final class LogId {
 
+    public static final String TRACE_LOG_ID = "TRACE_LOG_ID";
+
     private LogId() {
     }
 

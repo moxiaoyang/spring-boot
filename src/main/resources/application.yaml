@@ -1,22 +1,33 @@
+---
 server:
-    port: 8080
+    port: 8081
+    address: localhost
+---
 #默认使用配置
 spring:
   profiles:
     active: dev
+---
 #公共配置与profiles选择无关 mapperLocations指的路径是src/main/resources
 mybatis:
   typeAliasesPackage: com.app.model
   mapperLocations: classpath:mapper/*.xml
+---
 pagehelper:
    helperDialect: mysql
    reasonable: true
    supportMethodsArguments: true
    params: count=countSql
 ---
+redis:
+  host:
+    - 127.0.0.1
+    - 127.0.0.2
+  port: 6379
+  timeout: 5000
+---
 #开发配置
 spring:
-  profiles: dev
   datasource:
        name: test
        url: jdbc:mysql://rm-uf64zu10w62yb01t5o.mysql.rds.aliyuncs.com:3306/home

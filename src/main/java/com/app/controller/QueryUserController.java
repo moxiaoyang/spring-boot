@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class QueryUserController {
 
-    @RequestMapping(value = "queryUser",produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "queryUser", produces = {"application/json;charset=UTF-8"})
     public String queryUser() {
-        MDC.put("TRACE_LOG_ID", LogId.getLogId());
+        MDC.put(LogId.TRACE_LOG_ID, LogId.getLogId());
         log.info("call 哈哈哈哈");
         return "张三";
     }
