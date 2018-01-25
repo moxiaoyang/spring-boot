@@ -23,3 +23,4 @@ pom.xml.versionsBackup
 /test/*
 web/src/test/resources/
 */tmp/
+.logs/*
