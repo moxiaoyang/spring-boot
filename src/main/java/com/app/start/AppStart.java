@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 莫小阳
  */
 @SpringBootApplication(scanBasePackages = "com.app")
-@MapperScan("com.winter.mapper")
+@MapperScan("com.app.mapper")
 public class AppStart {
 
     public static void main(String[] args) {
