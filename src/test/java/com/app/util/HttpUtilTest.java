@@ -1,15 +1,24 @@
 package com.app.util;
 
 import com.app.constant.Constant;
+import com.app.mapper.BaseTest;
 import com.app.model.ShareInfo;
+import com.app.model.ShareSetting;
 import org.assertj.core.util.Maps;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class HttpUtilTest {
+public class HttpUtilTest extends BaseTest{
+
+    @Autowired
+    private ShareSetting shareSetting;
+
+
     @Test
     public void testHttp() {
         String url = "http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=C._A&sty=FCOIATA&sortType=(Code)&sortRule=1&page=1&pageSize=1000000000&" +
@@ -22,10 +31,11 @@ public class HttpUtilTest {
         ShareInfo shareInfo = new ShareInfo();
         for (String s : list) {
             String[] split1 = s.split(",");
-            if ("600784".equals(split1[1])) {
+            if ("000001".equals(split1[1])) {
                 shareInfo.setCode(split1[1]);
                 shareInfo.setShareName(split1[2]);
                 shareInfo.setPrice(split1[3]);
+                shareInfo.setValue(Double.valueOf(split1[4]));
             }
         }
 

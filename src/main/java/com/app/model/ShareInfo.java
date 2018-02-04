@@ -13,7 +13,7 @@ import lombok.Data;
  * @date 2018/2/2 0002
  */
 @Data
-public class ShareInfo {
+public class ShareInfo  {
 
     /**
      * 股票代码
@@ -29,5 +29,12 @@ public class ShareInfo {
      * 股票价格
      */
     private String price;
+
+    /**
+     * 差价
+     */
+    private double value;
+
+
 
 }

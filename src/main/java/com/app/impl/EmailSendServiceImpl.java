@@ -2,8 +2,10 @@ package com.app.impl;
 
 import com.app.constant.Constant;
 import com.app.interfaces.EmailSendService;
+import com.app.model.EmailSetting;
 import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.activation.DataHandler;
@@ -25,27 +27,16 @@ import java.util.Properties;
 @Service
 public class EmailSendServiceImpl implements EmailSendService {
 
+    /**
+     * 姓名
+     */
     private static final String personalName = "王东江";
 
     /**
-     * 发送邮件用户
+     * 邮件配置
      */
-    private String sendUserName = "wangdongjiang@aliyun.com";
-
-    /**
-     * 发送邮件用户密码
-     */
-    private String sendUserMM = "Wdj&19910702";
-
-    /**
-     * 邮箱Host
-     */
-    private String emailHost = "smtp.aliyun.com";
-
-    /**
-     * 邮箱Host
-     */
-    private String emailAuth = "true";
+    @Autowired
+    private EmailSetting emailSetting;
 
     /**
      * 添加多个附件
@@ -101,24 +92,24 @@ public class EmailSendServiceImpl implements EmailSendService {
         try {
 
             if (userName != null && userPassword != null && emailHosts != null) {
-                this.sendUserName = userName;
-                this.sendUserMM = userPassword;
-                this.emailHost = emailHosts;
+                emailSetting.setSendUserName(userName);
+                emailSetting.setSendUserPwd(userPassword);
+                emailSetting.setEmailHost(emailHosts);
             }
 
             if (mailAddressTO == null || mailAddressTO.isEmpty()) {
                 throw new RuntimeException("参数有误");
             }
             Properties props = new Properties();
-            props.put("mail.smtp.host", emailHost);
+            props.put("mail.smtp.host", emailSetting.getEmailHost());
             // 是否身份验证
-            props.put("mail.smtp.auth", emailAuth);
+            props.put("mail.smtp.auth", emailSetting.getEmailAuth());
             PopupAuthenticator auth = new PopupAuthenticator();
             Session session = Session.getInstance(props, auth);
             // 主要是利于调试，默认为false
             session.setDebug(false);
             // 发件人
-            Address addressFrom = new InternetAddress(sendUserName, MimeUtility.encodeWord(personalName));
+            Address addressFrom = new InternetAddress(emailSetting.getSendUserName(), MimeUtility.encodeWord(personalName));
             Multipart container = new MimeMultipart();
             if (StringUtil.isNotEmpty(mailContent)) {
                 MimeBodyPart textBodyPart = new MimeBodyPart();
@@ -173,24 +164,24 @@ public class EmailSendServiceImpl implements EmailSendService {
         try {
 
             if (userName != null && userPassword != null && emailHosts != null) {
-                this.sendUserName = userName;
-                this.sendUserMM = userPassword;
-                this.emailHost = emailHosts;
+                emailSetting.setSendUserName(userName);
+                emailSetting.setSendUserPwd(userPassword);
+                emailSetting.setEmailHost(emailHosts);
             }
 
             if (mailAddressTO == null || mailAddressTO.isEmpty()) {
                 throw new RuntimeException("有误");
             }
             Properties props = new Properties();
-            props.put("mail.smtp.host", emailHost);
+            props.put("mail.smtp.host", emailSetting.getEmailHost());
             // 是否身份验证
-            props.put("mail.smtp.auth", emailAuth);
+            props.put("mail.smtp.auth", emailSetting.getEmailAuth());
             PopupAuthenticator auth = new PopupAuthenticator();
             Session session = Session.getInstance(props, auth);
             // 主要是利于调试，默认为false
             session.setDebug(false);
             // 发件人
-            Address addressFrom = new InternetAddress(sendUserName, MimeUtility.encodeWord(personalName));
+            Address addressFrom = new InternetAddress(emailSetting.getSendUserName(), MimeUtility.encodeWord(personalName));
             Multipart container = new MimeMultipart();
             if (StringUtil.isNotEmpty(mailContent)) {
                 MimeBodyPart textBodyPart = new MimeBodyPart();
@@ -228,7 +219,7 @@ public class EmailSendServiceImpl implements EmailSendService {
     private class PopupAuthenticator extends Authenticator {
         @Override
         public PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(sendUserName, sendUserMM);
+            return new PasswordAuthentication(emailSetting.getSendUserName(), emailSetting.getSendUserPwd());
         }
     }
 

@@ -1,12 +1,21 @@
 package com.app.task;
 
 import com.app.constant.Constant;
+import com.app.interfaces.ShareInfoEmailService;
+import com.app.log.LogId;
+import com.app.model.ShareInfo;
 import com.app.util.HttpUtil;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -22,18 +31,22 @@ import org.springframework.util.StringUtils;
 @EnableScheduling
 public class SharePriceTask {
 
+
+    /**
+     * 发送股票信息服务
+     */
+    @Autowired
+    private ShareInfoEmailService shareInfoEmailService;
+
     @Scheduled(cron = "*/5 * * * * ?")
     public void getToken() {
-
-        String url = "http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=C._A&sty=FCOIATA&sortType=(Code)&sortRule=1&page=1&pageSize=1000000000&" +
-                "js=var%2520VnODumYu=%257Brank:[(x)],pages:(pc),total:(tot)%257D&token=7bc05d0d4c3c22ef9fca8c2a912d779c&jsName=quote_123&_g=0.628606915911589&_=1517561168627";
-        String content = HttpUtil.getContentByGet(url, Constant.GBK);
-        if (StringUtils.isEmpty(content)) {
-            throw new RuntimeException("获取数据为空");
+        log.info("call 开始发送股票信息···");
+        try {
+            shareInfoEmailService.sendShareInfoEmail(MDC.get(LogId.getLogId()));
+        } catch (Exception e) {
+            log.error("call 发送股票信息异常：{}", e);
         }
-        content = content.substring(content.indexOf("[") + 1, content.indexOf("]"));
-
-        System.out.println(content);
+        log.info("call 发送股票信息结束···");
     }
 
 }
